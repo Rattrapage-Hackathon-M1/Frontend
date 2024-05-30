@@ -1,11 +1,9 @@
-# Frontend
+# Vue 3 + TypeScript + Vite
 
-## Description
+This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
 
-Répository contenant le front end du projet de rattrapage pour le Hackathon.
+## Recommended Setup
 
-## Langages utilisés
+- [VS Code](https://code.visualstudio.com/) + [Vue - Official](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (previously Volar) and disable Vetur
 
-- Vue.js & Tailwind :
-J'ai décidé d'utiliser Vue.js pour la facilité de mise en place de l'application et pour la facilité de mise en place de l'application. Tailwind a été utilisé pour le design de l'application.
-De plus j'ai déjà utilisé Vue.js pour un projet personnel et j'ai trouvé que c'était un bon choix pour ce projet.
+- Use [vue-tsc](https://github.com/vuejs/language-tools/tree/master/packages/tsc) for performing the same type checking from the command line, or for generating d.ts files for SFCs.
