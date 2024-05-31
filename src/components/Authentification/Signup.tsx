@@ -29,7 +29,7 @@ const Signup: React.FC = () => {
       dispatch({ type: 'SET_TOKEN', payload: response.data.token });
       setConfirmationMessage('Inscription réussie. Vous pouvez maintenant vous connecter.');
       setMessageType('success');
-      navigate('/taches');
+      navigate('/login');
     } catch (error) {
       console.error('Error:', error);
       setConfirmationMessage('Erreur lors de l’inscription. Veuillez réessayer.');
