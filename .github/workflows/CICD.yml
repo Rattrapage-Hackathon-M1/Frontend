@@ -36,12 +36,19 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
       - name: Hadolint
         uses: hadolint/hadolint-action@v3.1.0
         with:
           dockerfile: ./Dockerfile
-
+      - name: Cache Docker layers
+        uses: actions/cache@v2
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
@@ -68,9 +75,11 @@ jobs:
       - name: run container
         run: docker container run -d -p "${CONTAINER_PORT}":5173 --name "${CONTAINER_NAME}" "${IMAGE_NAME}"
       - name: Wait container startup
-        run: sleep 5
+        run: sleep 20
+      - name: Check container logs
+        run: docker logs "${CONTAINER_NAME}"
       - name: http test request
-        run: curl http://127.0.0.1:"${CONTAINER_PORT}"/
+        run: curl -v http://127.0.0.1:"${CONTAINER_PORT}"/
       - name: stop container
         run: docker container stop "${CONTAINER_NAME}"
       - name: remove container
