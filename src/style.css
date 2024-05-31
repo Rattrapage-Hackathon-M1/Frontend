@@ -1,3 +1,60 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* src/index.css ou dans le fichier css global */
+.auth-container {
+  max-width: 400px;
+  margin: 50px auto;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+button {
+  width: 100%;
+  padding: 14px 20px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+button:hover {
+  opacity: 0.8;
+}
+
+.switch-mode {
+  color: #777;
+  cursor: pointer;
+}
+
+.switch-mode:hover {
+  text-decoration: underline;
+}
+
+.success-message {
+  color: #4caf50; /* Couleur de succès */
+  font-size: small;
+  text-align: center;
+  margin-top: 10px;
+}
+
+.error-message {
+  color: #ea2d2d; /* Couleur d'erreur */
+  font-size: small;
+  text-align: center;
+  margin-top: 10px;
+}
+
+
