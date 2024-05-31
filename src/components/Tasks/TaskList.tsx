@@ -22,7 +22,7 @@ const TaskList: React.FC = () => {
 
   useEffect(() => {
     const fetchTaches = async () => {
-      console.log('Token:', authState.token);  // Log the token here
+      console.log('Fetching tasks with token:', authState.token);  // Log the fetch attempt
       try {
         const response = await axios.get('http://localhost:8000/tache/get-all-taches', {
           headers: {
