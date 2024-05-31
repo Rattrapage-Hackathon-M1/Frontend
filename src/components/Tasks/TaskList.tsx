@@ -22,6 +22,7 @@ const TaskList: React.FC = () => {
 
   useEffect(() => {
     const fetchTaches = async () => {
+      console.log('Token:', authState.token);  // Log the token here
       try {
         const response = await axios.get('http://localhost:8000/tache/get-all-taches', {
           headers: {
@@ -68,7 +69,7 @@ const TaskList: React.FC = () => {
               <p>
                 <strong>Status:</strong> {tache.isDone ? 'Terminée' : 'En cours'}
               </p>
-              <Link to={`/task/${tache.id}`} className="text-blue-500">Voir Détails</Link>
+              <Link to={`/tache/${tache.id}`} className="text-blue-500">Voir Détails</Link>
             </li>
           ))}
         </ul>

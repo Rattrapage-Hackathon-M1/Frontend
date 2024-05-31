@@ -12,6 +12,7 @@ const Login: React.FC = () => {
   const [confirmationMessage, setConfirmationMessage] = useState<string>('');
   const [messageType, setMessageType] = useState<string>('');
   const navigate = useNavigate();
+  const [error, setError] = useState<string | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
@@ -24,14 +25,13 @@ const Login: React.FC = () => {
     e.preventDefault();
     try {
       const response = await axios.post('http://localhost:8000/auth/login', formData);
-      dispatch({ type: 'SET_TOKEN', payload: response.data.token });
-      setConfirmationMessage('Connexion réussie.');
-      setMessageType('success');
-      navigate('/verifytoken'); // Redirige vers la page de vérification du token
+      const { token, user } = response.data;
+      dispatch({ type: 'SET_TOKEN', payload: token });
+      dispatch({ type: 'SET_USER', payload: user });
+      navigate('/verifytoken'); // Redirect to tasks page
     } catch (error) {
-      console.error('Error:', error);
-      setConfirmationMessage('Erreur lors de la connexion. Veuillez réessayer.');
-      setMessageType('error');
+      console.error('There was an error!', error);
+      setError('Invalid login credentials');
     }
   };
 

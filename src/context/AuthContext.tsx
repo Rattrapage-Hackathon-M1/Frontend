@@ -58,7 +58,7 @@ const authReducer = (state: State, action: any): State => {
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [state, dispatch] = useReducer(authReducer, initialState);
-  console.log('AuthProvider initialized');
+
   return (
     <AuthContext.Provider value={{ state, dispatch }}>
       {children}
