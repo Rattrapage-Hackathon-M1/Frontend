@@ -60,7 +60,7 @@ jobs:
     runs-on: ubuntu-22.04
     needs: [build]
     env:
-      REGISTRY: ghcr.io/rattrapage-hackathon-m1/authentification
+      REGISTRY: ghcr.io/rattrapage-hackathon-m1/frontend
     permissions: write-all
     steps:
       - uses: actions/checkout@v3
