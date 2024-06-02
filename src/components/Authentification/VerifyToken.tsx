@@ -10,6 +10,7 @@ const VerifyToken: React.FC = () => {
 
   useEffect(() => {
     const verifyToken = async () => {
+      console.log('Verifying token:', state.token);
       try {
         const response = await axios.get('http://localhost:8000/auth/verifytoken', {
           headers: {
@@ -20,7 +21,7 @@ const VerifyToken: React.FC = () => {
       } catch (error) {
         console.error('Error:', error);
         setMessage('Token is invalid or expired');
-        navigate('/login'); // Redirige vers la page de connexion en cas d'erreur
+        // navigate('/login'); // Redirige vers la page de connexion en cas d'erreur
       }
     };
 

@@ -32,7 +32,7 @@ const Login: React.FC = () => {
       const { token, user } = response.data;
       dispatch({ type: 'SET_TOKEN', payload: token });
       dispatch({ type: 'SET_USER', payload: user });
-      navigate('/verifytoken'); // Redirect to tasks page
+      // navigate('/verifytoken'); // Redirect to tasks page
     } catch (error) {
       console.error('There was an error!', error);
       if (axios.isAxiosError(error) && error.response) {
