@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useAuth } from '../../context/AuthContext';
+import { API_ROUTES } from '../../router/apiRoutes';
+
 
 const ChangePassword: React.FC = () => {
   const { state } = useAuth();
@@ -20,7 +22,7 @@ const ChangePassword: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:8000/auth/changepassword', formData, {
+      const response = await axios.post(API_ROUTES.AUTH.CHANGE_PASSWORD, formData, {
         headers: {
           Authorization: `Bearer ${state.token}`
         }

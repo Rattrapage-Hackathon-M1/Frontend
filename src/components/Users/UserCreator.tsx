@@ -1,20 +1,15 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useAuth } from '../../context/AuthContext';
-import { useTasks } from '../../context/TaskContext';
 import { API_ROUTES } from '../../router/apiRoutes';
 
-
-const TaskCreator: React.FC = () => {
+const UserCreator: React.FC = () => {
   const { state: authState } = useAuth();
-  const { dispatch } = useTasks();
-  const today = new Date().toISOString().split('T')[0];
   const [formData, setFormData] = useState({
-    titre: '',
-    description: '',
-    dateDebut: today,
-    dateFin: today,
-    isDone: false
+    username: '',
+    mail: '',
+    password: '',
+    roles: 'ROLE_USER'
   });
   const [message, setMessage] = useState<string>('');
 
@@ -25,36 +20,44 @@ const TaskCreator: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await axios.post(API_ROUTES.TACHE.CREATE, formData, {
+      const response = await axios.post(API_ROUTES.UTILISATEUR.CREATE, formData, {
         headers: {
           Authorization: `Bearer ${authState.token}`
         }
       });
-      dispatch({ type: 'ADD_TACHE', payload: response.data });
-      setMessage('Tâche créée avec succès');
+      setMessage('Utilisateur créé avec succès');
     } catch (error) {
-      console.error('Error creating task:', error);
-      setMessage('Erreur lors de la création de la tâche');
+      console.error('Error creating user:', error);
+      setMessage('Erreur lors de la création de l\'utilisateur');
     }
   };
 
   return (
     <div className="auth-container">
       <form onSubmit={handleSubmit}>
-        <h2>Créer une Tâche</h2>
+        <h2>Créer un Utilisateur</h2>
         <input
           type="text"
-          name="titre"
-          value={formData.titre}
+          name="username"
+          value={formData.username}
           onChange={handleChange}
-          placeholder="Titre"
+          placeholder="Nom d'utilisateur"
           required
         />
-        <textarea
-          name="description"
-          value={formData.description}
+        <input
+          type="email"
+          name="mail"
+          value={formData.mail}
           onChange={handleChange}
-          placeholder="Description"
+          placeholder="Email"
+          required
+        />
+        <input
+          type="password"
+          name="password"
+          value={formData.password}
+          onChange={handleChange}
+          placeholder="Mot de passe"
           required
         />
         <button type="submit">Créer</button>
@@ -64,4 +67,4 @@ const TaskCreator: React.FC = () => {
   );
 };
 
-export default TaskCreator;
+export default UserCreator;

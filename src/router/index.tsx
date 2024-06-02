@@ -9,6 +9,9 @@ import VerifyToken from '../components/Authentification/VerifyToken';
 import ChangePassword from '../components/Authentification/ChangePassword';
 import Logout from '../components/Authentification/Logout';
 import RefreshToken from '../components/Authentification/RefreshToken';
+import UserCreator from '../components/Users/UserCreator';
+import UserList from '../components/Users/UserList';
+import UserDetails from '../components/Users/UserDetails';
 
 const AppRouter: React.FC = () => {
   return (
@@ -22,6 +25,9 @@ const AppRouter: React.FC = () => {
         <Route path="/taches" element={<TaskList />} />
         <Route path="/taches/:id" element={<TaskDetails />} />
         <Route path="/create" element={<TaskCreator />} />
+        <Route path="/utilisateurs" element={<UserList />} />
+        <Route path="/utilisateur/:id" element={<UserDetails />} />
+        <Route path="/create-user" element={<UserCreator />} />
         <Route path="/" element={<Login />} />
       </Routes>
   );

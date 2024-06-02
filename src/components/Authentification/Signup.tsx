@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import { API_ROUTES } from '../../router/apiRoutes';
 
 const Signup: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -25,14 +26,25 @@ const Signup: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:8000/auth/signup', formData);
+      const response = await axios.post(API_ROUTES.AUTH.SIGNUP, formData);
       dispatch({ type: 'SET_TOKEN', payload: response.data.token });
       setConfirmationMessage('Inscription réussie. Vous pouvez maintenant vous connecter.');
       setMessageType('success');
       navigate('/login');
     } catch (error) {
       console.error('Error:', error);
-      setConfirmationMessage('Erreur lors de l’inscription. Veuillez réessayer.');
+      if (axios.isAxiosError(error) && error.response) {
+        const errorMessage = error.response.data;
+        if (errorMessage === "Erreur : l'adresse email est déjà prise") {
+          setConfirmationMessage('Erreur : l\'adresse email est déjà prise');
+        } else if (errorMessage === "Erreur : le username est déjà pris") {
+          setConfirmationMessage('Erreur : le username est déjà pris');
+        } else {
+          setConfirmationMessage('Erreur lors de l’inscription. Veuillez réessayer.');
+        }
+      } else {
+        setConfirmationMessage('Erreur lors de l’inscription. Veuillez réessayer.');
+      }
       setMessageType('error');
     }
   };

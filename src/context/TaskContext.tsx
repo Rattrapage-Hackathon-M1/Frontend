@@ -4,8 +4,8 @@ interface Tache {
   id: number;
   titre: string;
   description: string;
-  dateDebut: string;
-  dateFin: string;
+  dateDebut: Date;
+  dateFin: Date;
   isDone: boolean;
   utilisateurId: number;
 }

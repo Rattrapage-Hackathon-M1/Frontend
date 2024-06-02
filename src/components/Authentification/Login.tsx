@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import { API_ROUTES } from '../../router/apiRoutes';
 
 const Login: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -24,14 +25,26 @@ const Login: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:8000/auth/login', formData);
+      const response = await axios.post(API_ROUTES.AUTH.LOGIN, {
+        username: formData.username,
+        password: formData.password,
+      });
       const { token, user } = response.data;
       dispatch({ type: 'SET_TOKEN', payload: token });
       dispatch({ type: 'SET_USER', payload: user });
       navigate('/verifytoken'); // Redirect to tasks page
     } catch (error) {
       console.error('There was an error!', error);
-      setError('Invalid login credentials');
+      if (axios.isAxiosError(error) && error.response) {
+        const errorMessage = error.response.data;
+        if (errorMessage === "Username ou mot de passe incorrect") {
+          setError('Username ou mot de passe incorrect');
+        } else {
+          setError('Erreur lors de la connexion. Veuillez réessayer.');
+        }
+      } else {
+        setError('Erreur lors de la connexion. Veuillez réessayer.');
+      }
     }
   };
 
@@ -63,9 +76,9 @@ const Login: React.FC = () => {
         <p className="switch-mode">
           Pas de compte ? <Link to="/signup" className="text-blue-500">Inscrivez-vous</Link>
         </p>
-        {confirmationMessage && (
-          <div className={messageType === 'error' ? 'error-message' : 'success-message'}>
-            {confirmationMessage}
+        {error && (
+          <div className="error-message">
+            {error}
           </div>
         )}
       </form>
