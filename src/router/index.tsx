@@ -4,6 +4,7 @@ import Login from '../components/Authentification/Login';
 import TaskList from '../components/Tasks/TaskList';
 import TaskCreator from '../components/Tasks/TaskCreator';
 import TaskDetails from '../components/Tasks/TaskDetails';
+import TaskEditor from '../components/Tasks/TaskEditor'; // Import du nouveau composant
 import Signup from '../components/Authentification/Signup';
 import VerifyToken from '../components/Authentification/VerifyToken';
 import ChangePassword from '../components/Authentification/ChangePassword';
@@ -25,6 +26,7 @@ const AppRouter: React.FC = () => {
         <Route path="/taches" element={<TaskList />} />
         <Route path="/taches/:id" element={<TaskDetails />} />
         <Route path="/create" element={<TaskCreator />} />
+        <Route path="/taches/edit/:id" element={<TaskEditor />} />
         <Route path="/utilisateurs" element={<UserList />} />
         <Route path="/utilisateur/:id" element={<UserDetails />} />
         <Route path="/create-user" element={<UserCreator />} />

@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import axiosInstance from '../../instance';
-import { useAuth } from '../../context/AuthContext';
 import { useTasks } from '../../context/TaskContext';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
@@ -11,12 +9,11 @@ interface Tache {
   description: string;
   dateDebut: string | null;
   dateFin: string | null;
-  isDone: boolean;
+  done: boolean;
   utilisateurId: number | null;
 }
 
 const TaskList: React.FC = () => {
-  const { state: authState } = useAuth();
   const { state: taskState, dispatch } = useTasks();
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -27,22 +24,16 @@ const TaskList: React.FC = () => {
 
   useEffect(() => {
     const fetchTaches = async () => {
-      console.log('Fetching tasks with token:', authState.token);
       try {
-        const response = await axios.get('http://localhost:8000/tache/get-all-taches', {
-          headers: {
-            Authorization: `Bearer ${authState.token}`
-          }
-        });
+        const response = await axios.get('http://localhost:8080/api/taches/get-all-taches');
         dispatch({ type: 'SET_TACHES', payload: response.data });
 
         const today = new Date();
         today.setHours(0, 0, 0, 0);
 
         setTachesPassees(response.data.filter((tache: Tache) => new Date(tache.dateFin) < today));
-        setTachesEnCours(response.data.filter((tache: Tache) => new Date(tache.dateFin).getTime() === today.getTime()));
-        setTachesAVenir(response.data.filter((tache: Tache) => new Date(tache.dateFin) > today));
-
+        setTachesEnCours(response.data.filter((tache: Tache) => new Date(tache.dateDebut) <= today && new Date(tache.dateFin) >= today));
+        setTachesAVenir(response.data.filter((tache: Tache) => new Date(tache.dateDebut) > today));
       } catch (error) {
         console.error('Error fetching tasks:', error);
         setError('Failed to fetch tasks');
@@ -52,33 +43,37 @@ const TaskList: React.FC = () => {
     };
 
     fetchTaches();
-  }, [authState.token, dispatch]);
+  }, [dispatch]);
 
   const renderTaches = (taches: Tache[]) => (
-    <table className="table-auto">
-      <thead>
-        <tr>
-          <th>Titre</th>
-          <th>Description</th>
-          <th>Date de début</th>
-          <th>Date de fin</th>
-          <th>Status</th>
-          <th>Action</th>
-        </tr>
-      </thead>
-      <tbody>
-        {taches.map(tache => (
-          <tr key={tache.id}>
-            <td>{tache.titre || 'N/A'}</td>
-            <td>{tache.description}</td>
-            <td>{tache.dateDebut ? new Date(tache.dateDebut).toLocaleDateString() : 'N/A'}</td>
-            <td>{tache.dateFin ? new Date(tache.dateFin).toLocaleDateString() : 'N/A'}</td>
-            <td>{tache.isDone ? 'Terminée' : 'En cours'}</td>
-            <td><Link to={`/tache/${tache.id}`} className="text-blue-500">Voir Détails</Link></td>
+    <div className="overflow-x-auto">
+      <table className="min-w-full bg-white shadow-md rounded-lg">
+        <thead className="bg-gray-200">
+          <tr>
+            <th className="py-2 px-4 border-b-2 border-gray-300">Titre</th>
+            <th className="py-2 px-4 border-b-2 border-gray-300">Description</th>
+            <th className="py-2 px-4 border-b-2 border-gray-300">Date de début</th>
+            <th className="py-2 px-4 border-b-2 border-gray-300">Date de fin</th>
+            <th className="py-2 px-4 border-b-2 border-gray-300">Status</th>
+            <th className="py-2 px-4 border-b-2 border-gray-300">Action</th>
           </tr>
-        ))}
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          {taches.map((tache) => (
+            <tr key={tache.id} className="hover:bg-gray-100">
+              <td className="py-2 px-4 border-b border-gray-200">{tache.titre || 'N/A'}</td>
+              <td className="py-2 px-4 border-b border-gray-200">{tache.description}</td>
+              <td className="py-2 px-4 border-b border-gray-200">{tache.dateDebut ? new Date(tache.dateDebut).toLocaleDateString() : 'N/A'}</td>
+              <td className="py-2 px-4 border-b border-gray-200">{tache.dateFin ? new Date(tache.dateFin).toLocaleDateString() : 'N/A'}</td>
+              <td className="py-2 px-4 border-b border-gray-200">{tache.done ? 'Terminée' : 'En cours'}</td>
+              <td className="py-2 px-4 border-b border-gray-200">
+                <Link to={`${tache.id}`} className="text-blue-500 hover:text-blue-700">Voir Détails</Link>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 
   if (loading) {
@@ -92,7 +87,7 @@ const TaskList: React.FC = () => {
   return (
     <div className="p-4">
       <h2 className="text-2xl mb-4">Liste des Tâches</h2>
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div>
           <h3 className="text-xl mb-2">Passées</h3>
           {renderTaches(tachesPassees)}

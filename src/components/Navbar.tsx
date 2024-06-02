@@ -8,7 +8,7 @@ const Navbar: React.FC = () => {
     <nav className="bg-blue-600 p-4 text-white shadow-md">
       <div className="container mx-auto flex justify-between items-center">
         <Link to="/" className="text-2xl font-bold">
-          Mon Application
+          Tasks Manager
         </Link>
         <div className="flex space-x-4">
           <Menu as="div" className="relative">
@@ -92,6 +92,54 @@ const Navbar: React.FC = () => {
                     className={`block px-4 py-2 ${active ? 'bg-gray-100' : ''}`}
                   >
                     Tâches
+                  </Link>
+                )}
+              </Menu.Item>
+              <Menu.Item>
+                {({ active }) => (
+                  <Link
+                    to="/create"
+                    className={`block px-4 py-2 ${active ? 'bg-gray-100' : ''}`}
+                  >
+                    Créer une Tâche
+                  </Link>
+                )}
+              </Menu.Item>
+              <Menu.Item>
+                {({ active }) => (
+                  <Link
+                    to="/create"
+                    className={`block px-4 py-2 ${active ? 'bg-gray-100' : ''}`}
+                  >
+                    Créer une Tâche
+                  </Link>
+                )}
+              </Menu.Item>
+            </Menu.Items>
+          </Menu>
+          <Menu as="div" className="relative">
+            <Menu.Button className="flex items-center space-x-1">
+              <span>Utilisateurs</span>
+              <ChevronDownIcon className="w-5 h-5" />
+            </Menu.Button>
+            <Menu.Items className="absolute right-0 w-48 mt-2 origin-top-right bg-white text-black border border-gray-200 rounded-md shadow-lg">
+              <Menu.Item>
+                {({ active }) => (
+                  <Link
+                    to="/utilisateurs"
+                    className={`block px-4 py-2 ${active ? 'bg-gray-100' : ''}`}
+                  >
+                    Utilisateurs
+                  </Link>
+                )}
+              </Menu.Item>
+              <Menu.Item>
+                {({ active }) => (
+                  <Link
+                    to="/create-user"
+                    className={`block px-4 py-2 ${active ? 'bg-gray-100' : ''}`}
+                  >
+                    Créer un utilisateur
                   </Link>
                 )}
               </Menu.Item>

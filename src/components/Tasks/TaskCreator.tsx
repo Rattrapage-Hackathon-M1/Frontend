@@ -8,13 +8,18 @@ import { API_ROUTES } from '../../router/apiRoutes';
 const TaskCreator: React.FC = () => {
   const { state: authState } = useAuth();
   const { dispatch } = useTasks();
-  const today = new Date().toISOString().split('T')[0];
+  const [titre, setTitre] = useState('');
+  const [description, setDescription] = useState('');
+  const [dateDebut, setDateDebut] = useState('');
+  const [dateFin, setDateFin] = useState('');
+  const [utilisateurId, setUtilisateurId] = useState(1);
   const [formData, setFormData] = useState({
     titre: '',
     description: '',
-    dateDebut: today,
-    dateFin: today,
-    isDone: false
+    dateDebut: new Date(dateDebut),
+    dateFin: new Date(dateFin),
+    isDone: false,
+    utilisateurId
   });
   const [message, setMessage] = useState<string>('');
 
@@ -39,28 +44,25 @@ const TaskCreator: React.FC = () => {
   };
 
   return (
-    <div className="auth-container">
-      <form onSubmit={handleSubmit}>
-        <h2>Créer une Tâche</h2>
-        <input
-          type="text"
-          name="titre"
-          value={formData.titre}
-          onChange={handleChange}
-          placeholder="Titre"
-          required
-        />
-        <textarea
-          name="description"
-          value={formData.description}
-          onChange={handleChange}
-          placeholder="Description"
-          required
-        />
-        <button type="submit">Créer</button>
-        {message && <p>{message}</p>}
-      </form>
-    </div>
+    <form onSubmit={handleSubmit}>
+      <div>
+        <label>Titre</label>
+        <input type="text" value={titre} onChange={(e) => setTitre(e.target.value)} required />
+      </div>
+      <div>
+        <label>Description</label>
+        <input type="text" value={description} onChange={(e) => setDescription(e.target.value)} required />
+      </div>
+      <div>
+        <label>Date de début</label>
+        <input type="date" value={dateDebut} onChange={(e) => setDateDebut(e.target.value)} required />
+      </div>
+      <div>
+        <label>Date de fin</label>
+        <input type="date" value={dateFin} onChange={(e) => setDateFin(e.target.value)} required />
+      </div>
+      <button type="submit">Ajouter Tâche</button>
+    </form>
   );
 };
 

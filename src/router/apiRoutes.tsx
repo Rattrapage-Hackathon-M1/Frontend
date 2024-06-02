@@ -1,9 +1,11 @@
-const API_BASE_URL = 'http://localhost:8000';
+const API_BASE_URL = 'http://localhost:8080/api/taches';
 
 export const API_ROUTES = {
   TACHE: {
-    GET_ALL: `${API_BASE_URL}/tache/get-all-taches`,
-    CREATE: `${API_BASE_URL}/tache/nouveau-tache`,
+    GET_ALL: `${API_BASE_URL}/get-all-taches`,
+    CREATE: `${API_BASE_URL}/nouveau-tache`,
+    DETAILS: `${API_BASE_URL}/get-tache-by-id`,
+    UPDATE: `${API_BASE_URL}/modifie-tache`,
   },
   AUTH: {
     LOGIN: `${API_BASE_URL}/auth/login`,

@@ -3,29 +3,24 @@ import axios from 'axios';
 import { useAuth } from '../../context/AuthContext';
 import { API_ROUTES } from '../../router/apiRoutes';
 import { Link } from 'react-router-dom';
-
-interface Utilisateur {
-  id: number;
-  username: string;
-  mail: string;
-  roles: string;
-}
+import { useUsers } from '../../context/UserContext';
 
 const UserList: React.FC = () => {
   const { state: authState } = useAuth();
-  const [utilisateurs, setUtilisateurs] = useState<Utilisateur[]>([]);
+  const { state: userState, dispatch } = useUsers();
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchUtilisateurs = async () => {
+      console.log('Fetching users with token:', authState.token);
       try {
         const response = await axios.get(API_ROUTES.UTILISATEUR.GET_ALL, {
           headers: {
             Authorization: `Bearer ${authState.token}`
           }
         });
-        setUtilisateurs(response.data);
+        dispatch({ type: 'SET_UTILISATEURS', payload: response.data });
       } catch (error) {
         console.error('Error fetching users:', error);
         setError('Erreur lors de la récupération des utilisateurs');
@@ -35,7 +30,7 @@ const UserList: React.FC = () => {
     };
 
     fetchUtilisateurs();
-  }, [authState.token]);
+  }, [authState.token, dispatch]);
 
   if (loading) {
     return <div>Loading...</div>;
@@ -59,7 +54,7 @@ const UserList: React.FC = () => {
           </tr>
         </thead>
         <tbody>
-          {utilisateurs.map(utilisateur => (
+          {userState.utilisateurs.map(utilisateur => (
             <tr key={utilisateur.id}>
               <td>{utilisateur.id}</td>
               <td>{utilisateur.username}</td>
