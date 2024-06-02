@@ -142,3 +142,9 @@ Le TaskContext gère l'état des tâches dans l'application. Il stocke la liste 
 - UserList.tsx : Affiche une liste d'utilisateurs.
 - UserCreator.tsx : Formulaire de création d'utilisateurs.
 - UserDetails.tsx : Affiche les détails d'un utilisateur spécifique.
+
+## Ressources
+
+![alt text](image.png)
+![alt text](image-1.png)
+![alt text](image-2.png)
