@@ -28,7 +28,7 @@ const AppRouter: React.FC = () => {
         <Route path="/create" element={<TaskCreator />} />
         <Route path="/taches/edit/:id" element={<TaskEditor />} />
         <Route path="/utilisateurs" element={<UserList />} />
-        <Route path="/utilisateur/:id" element={<UserDetails />} />
+        <Route path="/utilisateurs/:id" element={<UserDetails />} />
         <Route path="/create-user" element={<UserCreator />} />
         <Route path="/" element={<Login />} />
       </Routes>

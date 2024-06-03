@@ -105,16 +105,6 @@ const Navbar: React.FC = () => {
                   </Link>
                 )}
               </Menu.Item>
-              <Menu.Item>
-                {({ active }) => (
-                  <Link
-                    to="/create"
-                    className={`block px-4 py-2 ${active ? 'bg-gray-100' : ''}`}
-                  >
-                    Créer une Tâche
-                  </Link>
-                )}
-              </Menu.Item>
             </Menu.Items>
           </Menu>
           <Menu as="div" className="relative">
@@ -140,16 +130,6 @@ const Navbar: React.FC = () => {
                     className={`block px-4 py-2 ${active ? 'bg-gray-100' : ''}`}
                   >
                     Créer un utilisateur
-                  </Link>
-                )}
-              </Menu.Item>
-              <Menu.Item>
-                {({ active }) => (
-                  <Link
-                    to="/create"
-                    className={`block px-4 py-2 ${active ? 'bg-gray-100' : ''}`}
-                  >
-                    Créer une Tâche
                   </Link>
                 )}
               </Menu.Item>

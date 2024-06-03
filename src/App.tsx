@@ -4,15 +4,19 @@ import { AuthProvider } from './context/AuthContext';
 import { TaskProvider } from './context/TaskContext';
 import AppRouter from './router';
 import Navbar from './components/Navbar';
+import { UserProvider } from './context/UserContext';
+import './style.css';
 
 const App: React.FC = () => {
   return (
     <AuthProvider>
       <TaskProvider>
-        <Router>
-          <Navbar />
-          <AppRouter />
-        </Router>
+        <UserProvider>
+          <Router>
+            <Navbar />
+            <AppRouter />
+          </Router>
+        </UserProvider>
       </TaskProvider>
     </AuthProvider>
   );

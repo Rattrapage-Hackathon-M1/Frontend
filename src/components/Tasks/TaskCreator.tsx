@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useAuth } from '../../context/AuthContext';
 import { useTasks } from '../../context/TaskContext';
 import { API_ROUTES } from '../../router/apiRoutes';
-
+import '../../style.css';
 
 const TaskCreator: React.FC = () => {
   const { state: authState } = useAuth();
@@ -13,6 +13,27 @@ const TaskCreator: React.FC = () => {
   const [dateDebut, setDateDebut] = useState('');
   const [dateFin, setDateFin] = useState('');
   const [utilisateurId, setUtilisateurId] = useState(1);
+  const [message, setMessage] = useState<string>('');
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    if (name === 'titre') setTitre(value);
+    if (name === 'description') setDescription(value);
+    if (name === 'dateDebut') setDateDebut(value);
+    if (name === 'dateFin') setDateFin(value);
+  };
+
+  useEffect(() => {
+    setFormData({
+      titre,
+      description,
+      dateDebut: new Date(dateDebut),
+      dateFin: new Date(dateFin),
+      isDone: false,
+      utilisateurId
+    });
+  }, [titre, description, dateDebut, dateFin]);
+
   const [formData, setFormData] = useState({
     titre: '',
     description: '',
@@ -21,11 +42,6 @@ const TaskCreator: React.FC = () => {
     isDone: false,
     utilisateurId
   });
-  const [message, setMessage] = useState<string>('');
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -44,25 +60,51 @@ const TaskCreator: React.FC = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div>
-        <label>Titre</label>
-        <input type="text" value={titre} onChange={(e) => setTitre(e.target.value)} required />
-      </div>
-      <div>
-        <label>Description</label>
-        <input type="text" value={description} onChange={(e) => setDescription(e.target.value)} required />
-      </div>
-      <div>
-        <label>Date de début</label>
-        <input type="date" value={dateDebut} onChange={(e) => setDateDebut(e.target.value)} required />
-      </div>
-      <div>
-        <label>Date de fin</label>
-        <input type="date" value={dateFin} onChange={(e) => setDateFin(e.target.value)} required />
-      </div>
-      <button type="submit">Ajouter Tâche</button>
-    </form>
+    <div className="form-container">
+      <form onSubmit={handleSubmit}>
+        <div>
+          <label>Titre</label>
+          <input
+            type="text"
+            name="titre"
+            value={titre}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div>
+          <label>Description</label>
+          <textarea
+            name="description"
+            value={description}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div>
+          <label>Date de début</label>
+          <input
+            type="date"
+            name="dateDebut"
+            value={dateDebut}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div>
+          <label>Date de fin</label>
+          <input
+            type="date"
+            name="dateFin"
+            value={dateFin}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <button type="submit">Ajouter Tâche</button>
+        {message && <div className="message">{message}</div>}
+      </form>
+    </div>
   );
 };
 

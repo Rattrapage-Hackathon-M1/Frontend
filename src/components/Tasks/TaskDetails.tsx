@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
 interface Tache {
   id: number;
@@ -14,6 +14,7 @@ interface Tache {
 
 const TaskDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
   const [tache, setTache] = useState<Tache | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -54,6 +55,16 @@ const TaskDetails: React.FC = () => {
     } catch (error) {
       console.error('Error updating task:', error);
       setError('Failed to update task');
+    }
+  };
+
+  const handleDelete = async () => {
+    try {
+      await axios.delete(`http://localhost:8080/api/taches/supprimer-tache?id=${id}`);
+      navigate('/'); // Redirect to another page after deletion
+    } catch (error) {
+      console.error('Error deleting task:', error);
+      setError('Failed to delete task');
     }
   };
 
@@ -164,12 +175,20 @@ const TaskDetails: React.FC = () => {
                   )}
                 </p>
               </div>
-              <button
-                onClick={() => setEditing(true)}
-                className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md"
-              >
-                Modifier
-              </button>
+              <div className="flex justify-end space-x-2">
+                <button
+                  onClick={() => setEditing(true)}
+                  className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md"
+                >
+                  Modifier
+                </button>
+                <button
+                  onClick={handleDelete}
+                  className="mt-4 px-4 py-2 bg-red-500 text-white rounded-md"
+                >
+                  Supprimer
+                </button>
+              </div>
             </>
           )}
         </>
